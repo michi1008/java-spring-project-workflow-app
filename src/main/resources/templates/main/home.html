@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="home">
+<nav th:replace="layouts :: navbar"></nav>
+	<div>
+		<div id="container">
+		<a type="hidden" th:text="${version}" style="color:white;"></a>
+		<h2><strong>Project Task Management App</strong></h2>
+		<h6 style="margin: 40px 0px 20px 0px">This application was created using Java11, Spring5, PostgreSQL.</h6>
+		<h6>You can create projects, tasks and employees. For each project, you can add multiple tasks and for each task, you can assign multiple employees.</h6>
+		<h6>You can view all the pages. In order to add, update or delete items, you will be prompted to log in. If you would like to try doing so, please contact me at <a href="mailto:michytaguchi@gmail.com">Michiko Taguchi (MLT).</h6>
+		</div>
+	</div>
+</body>
+</html>

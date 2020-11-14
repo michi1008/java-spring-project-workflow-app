@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="opa">
+<nav th:replace="layouts :: navbar"></nav>
+	<br>
+	
+		<div class="container">
+		<form th:action="@{/projects/save}" th:object="${project}" method="POST">  <!-- action: go to the url -->
+		
+		<div class="form-group row">
+		
+		<!--  bind to the employee that needs to update -->
+		<input type="hidden" th:field="${project.projectId}"/>
+		
+		<p>Project Name</p>
+		<input class="form-control" type="text" placeholder="Project Name" th:field="${project.name}">	
+		<span style="color:red" th:if="${#fields.hasErrors('name')}"	
+					th:errors="${project.name}">
+		</span>
+		</div>		
+		
+		<br>
+
+		<div class="form-group row">
+		<p>Project Description</p>
+		<textarea class="form-control" type="text" maxlength="200" placeholder="Enter Project Descrition" th:field="${project.description}"></textarea>
+		<span style="color:red" th:if="${#fields.hasErrors('description')}"	
+					th:errors="${project.description}">
+		</span>	
+		</div>
+				
+		<div class="form-group row">
+		<p>Project Start Date:</p>
+		
+			<input type="date" id="start" class="mb-4 col-2 col-xs-4 padding-right: 40px" value="Start Date" th:field="${project.startDate}">
+		</div>
+		
+		<div class="form-group row">
+		<p>Project End Date:</p>
+		<br>
+			<input type="date" id="end" class="mb-4 col-2 col-xs-4 padding: 10px 40px" value="End Date" th:field="${project.endDate}">
+		</div>
+				
+		<div class="form-group row">		  	    
+	    <p>Select tasks:</p>   
+	    <select th:field="*{tasks}" multiple="multiple">  <!-- *{tasks} = {project.tasks} -->
+	    	<option th:each = "task : ${allTasks}"        
+	    		    th:value = "${task.taskId}"
+	    			th:text = "${task.name}">
+	    	</option>    <!-- ${allTasks} comes from ProjectController -->         
+	    </select>
+	   
+		</div>
+		<button class="btn btn-success" type="submit">Submit</button>
+		<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+		</form>
+	</div>	
+
+</body>
+</html>

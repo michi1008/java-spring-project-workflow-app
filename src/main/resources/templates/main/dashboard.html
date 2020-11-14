@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body>
+<nav th:replace="layouts :: navbar"></nav>
+
+<br>
+<body id="opa">
+<div class="container">
+	
+	<h3>Dashboard</h3>	
+	<hr>
+	<h4>Current Projects</h4>	
+	<div class="row">
+		<div class="col-md-10">			
+		<table class="table table-bordered table-striped">
+			<thead id="table-head" >
+				<tr>
+					<th scope="col">Project Name</th>
+					<th scope="col">Start Date</th>
+					<th scope="col">End Date</th>				
+					<th scope="col">Task Count</th>
+					<th scope="col">Action</th>
+																
+			</thead>
+			
+			<tbody>
+				<tr style="background-color:#FFFFFF" scope="row" th:each="aProjectTaskCount : ${projectTaskCount}">
+					<td th:text="${aProjectTaskCount.projectName}">
+					<td th:text="${aProjectTaskCount.startDate}">
+					<td th:text="${aProjectTaskCount.endDate}">
+					<td th:text="${aProjectTaskCount.taskCount}">
+					<td>
+						<a th:href="@{/projects/projectDetails(id=${aProjectTaskCount.projectId})}"
+							class="btn btn-success btn-sm">
+							See more details
+						</a> 
+					</td>									
+			</tbody>
+		</table>	
+		</div>					
+	</div>
+</div>
+</body>
+<div class="container" id="timelines">
+<h2 class="text-center"> Project Timelines</h2>
+	
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+
+		var chartData = "[[${projectTimeList}]]"
+		var chartDataDecoded = decodeHtml(chartData);
+		var chartJsonArray = JSON.parse(chartDataDecoded)
+		var resultArray = [];
+	
+		for(var i in chartJsonArray){
+			resultArray.push([i, chartJsonArray[i]]);
+		}
+
+		google.charts.load('current', {'packages':['timeline']});
+	    google.charts.setOnLoadCallback(drawChart);
+	      
+      function drawChart(){
+        var container = document.getElementById('chart_div');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'Project' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+
+	      for (var i = 0; i < resultArray.length; i++){
+	    	  dataTable.addRows([
+	    		  			[resultArray[i][1]["projectName"], 
+	    		  			 new Date(resultArray[i][1]["startDate"]),
+	    		  			new Date(resultArray[i][1]["endDate"])]
+	    		  ]);
+	      }	
+	      var options = {
+		    		timeline: {rowLabelStyle: {fontName: "verdana", fontSize:22, backgroundColor:"#7ed996"},
+		    		height: 1800}		  
+		      };
+	       		 chart.draw(dataTable, options);        
+             
+      }    		
+		function decodeHtml(html){
+		    var txt = document.createElement("textarea");
+		    txt.innerHTML = html;
+		    return txt.value;
+		}
+	</script> 
+	
+	<div id="chart_wrapper">
+  		<div id="chart_div"></div>
+  	</div>
+  	
+</div>	
+</body>
+</html>

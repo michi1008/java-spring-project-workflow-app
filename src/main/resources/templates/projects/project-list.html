@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="opa">
+<nav th:replace="layouts :: navbar"></nav>
+	<br>
+	<div class="container">
+		<h3>Projects Directory</h3>
+			<hr>
+			
+			<!--  Add New Project Button -->
+			<a th:href="@{/projects/new}"
+				class="btn btn-success btn-sm mb-3"> 
+				New Project 
+			</a>
+			<table class="table table-bordered table-striped">
+				<thead id="table-head">
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Start Date</th>
+						<th scope="col">End Date</th>
+						<th scope="col">Description</th>									
+						<th scope="col">Action</th>											
+				</thead>
+				
+				<tbody>
+					<tr style="background-color:#FFFFFF" scope="row" th:each="aProject : ${projects}">
+						<td th:text="${aProject.name}">
+						<td th:text="${#dates.format(aProject.startDate,'yyyy-MM-dd')}">
+						<td th:text="${#dates.format(aProject.endDate,'yyyy-MM-dd')}">
+						<td th:text="${aProject.description}">					
+					</td>
+					<td>
+						<a th:href="@{/projects/update(id=${aProject.projectId})}"
+							class="btn btn-info btn-sm">
+							Update
+						</a>
+						<a th:href="@{/projects/delete(id=${aProject.projectId})}"
+							class="btn btn-danger btn-sm"
+							onClick="if (!(confirm('Are your sure you want to delete this project?'))) return false">
+							Delete
+						</a>
+					</td>	
+				</tbody>
+		</table>	
+		</div>
+</body>
+</html>

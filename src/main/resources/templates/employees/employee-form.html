@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="opa">
+<nav th:replace="layouts :: navbar"></nav>
+	<br>
+	<div class="container">
+		
+		<form th:action="@{/employees/save}" th:object="${employee}" method="POST">  <!-- action: go to the url -->		
+			<div class="form-group row">
+			<!--  bind to the employee that needs to update -->
+			<input type="hidden" th:field="${employee.employeeId}"/>
+			<p>First Name</p>
+			<input class="form-control" type="text" placeholder="Employee first Name" th:field="${employee.firstName}">	
+			<span style="color:red" th:if="${#fields.hasErrors('firstName')}"	
+					th:errors="${employee.firstName}"></span>	
+			</div>
+			
+			<div class="form-group row">
+			<p>Last Name</p>
+			<input class="form-control" type="text" placeholder="Employee last Name" th:field="${employee.LastName}">
+			<span style="color:red" th:if="${#fields.hasErrors('lastName')}"	
+					th:errors="${employee.lastName}"></span>					
+			</div>
+			
+			<div class="form-group row">
+			<p>Email Address</p>
+			<input class="form-control" type="text" placeholder="Employee email" th:field="${employee.email}">
+			<span style="color:red" th:if="${#fields.hasErrors('email')}"	
+					th:errors="${employee.email}"></span>					
+			</div>
+			
+			<br>
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<div class="form-group row">					     
+			<button class="btn btn-success" type="submit">Submit</button>
+			</div>			
+		</form>
+		
+	</div>	
+
+</body>
+
+</html>

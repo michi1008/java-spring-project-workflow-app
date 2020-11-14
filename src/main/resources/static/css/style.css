@@ -1,0 +1,39 @@
+body{
+	background-color: #EEF9EE;
+
+	font-family:tahoma,arial;
+}
+
+h2, h6{
+	margin: 20px 0px;
+	font-family:verdana,arial;
+}
+
+#home{
+	background:url(/image/home_image.jpg); background-size: cover;
+}
+
+#opa{
+	background:url(/image/home_image_opa_25.jpg); background-size: cover; 
+}
+
+#container{
+	padding:10px 5px 15px 20px;
+	margin: 100px 5px 5px 80px;
+	height:400px;
+	width:600px;
+	background-color:white;
+	color:#003366;
+	opacity: 0.93;
+}
+
+#table-head {background-color:#00695c; 
+color:white;
+}
+
+#chart_div{
+	overflow:hidden;
+	width:1024px;
+	height:800px;
+}
+

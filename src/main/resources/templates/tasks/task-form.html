@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="opa">
+<nav th:replace="layouts :: navbar"></nav>
+	<br>
+	<div class="container">
+		
+		<form th:action="@{/tasks/save}" th:object="${task}" method="POST">  <!-- action: go to the url -->
+		
+			<div class="form-group row">
+			<!--  bind to the employee that needs to update -->
+			<input type="hidden" th:field="${task.taskId}"/>
+			<p>Task Name</p>
+			<input class="form-control" type="text" placeholder="Task Name" th:field="${task.name}">
+			<span style="color:red" th:if="${#fields.hasErrors('name')}"	
+						th:errors="${task.name}">
+			</span>	
+			</div>
+							
+			<div class="form-group row">
+			<p>Task Description</p>
+			<textarea class="form-control" type="text" maxlength="200" placeholder="Enter Task Descrition" th:field="${task.description}"></textarea>
+			<span style="color:red" th:if="${#fields.hasErrors('description')}"	
+						th:errors="${task.description}">
+			</span>	
+			</div>
+			
+			<p>Task Start Date:</p>
+			<div class="form-group row">
+				<input type="date" id="start" class="mb-4 col-2 col-xs-4" value="Start Date" th:field="${task.startDate}">
+			</div>
+	
+			<p>Task End Date:</p>
+			<div class="form-group row">
+				<input type="date" id="end" class="mb-4 col-2 col-xs-4" value="End Date" th:field="${task.endDate}">
+			</div>					  
+		    	    
+		    <p>Select employees:</p>   
+		    <select th:field="*{employees}" multiple="multiple">  <!-- *{employees} = {task.employees} -->
+		    	<option th:each = "employee : ${allEmployees}"        
+		    		    th:value = "${employee.employeeId}"
+		    			th:text = "${employee.firstName}">
+		    	</option>    <!-- ${allEmployees} comes from TaskController -->         
+		    </select> 
+		    <br>
+		    <br>
+		    <br>
+		    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<button type="submit" class="btn btn-success">Submit</button>		
+		</form>
+	</div>	
+</body>
+</html>

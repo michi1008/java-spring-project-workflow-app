@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<body id="opa">
+<nav th:replace="layouts :: navbar"></nav>
+
+<br>
+<div class="container">
+	
+	<h3>Project Details</h3>
+	<br>
+	<h4>Task List</h4>
+	<div class="row">		
+		<div class="col-md-6">			
+			<table class="table table-bordered table-striped">
+				<thead id="table-head">				
+					<tr >								
+						<th scope="col">Task Name</th>
+						<th scope="col">Task Start Date</th>				
+						<th scope="col">Task End Date</th>
+						<th scope="col">Task Description</th>																																	
+				</thead>
+				
+				<tbody>
+					<tr style="background-color:#FFFFFF" th:each="aProjectTask:${projectTasks}">
+						
+						<td th:text="${aProjectTask.taskName}">
+						<td th:text="${aProjectTask.startDate}">
+						<td th:text="${aProjectTask.endDate}">	
+						<td th:text="${aProjectTask.description}">																																		
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-md-4">	
+			<table class="table table-bordered table-striped">
+				<thead id="table-head">			
+					<tr>								
+						<th scope="col">Task Name</th>
+						<th scope="col">First Name</th>				
+						<th scope="col">Last Name</th>																																			
+				</thead>
+				
+				<tbody>
+					<tr style="background-color:#FFFFFF" th:each="aProjectTaskEmployee:${projectTaskEmployees}">
+						
+						<td th:text="${aProjectTaskEmployee.taskName}">
+						<td th:text="${aProjectTaskEmployee.firstName}">
+						<td th:text="${aProjectTaskEmployee.lastName}">	
+																																		
+				</tbody>
+			</table>		
+		</div>				
+	</div>
+</div>
+<br>
+
+<div class="container" id="timelines">
+<h2 class="text-center"> Project Timelines</h2>
+	
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+
+		var chartData = "[[${taskTimeList}]]"
+		var chartDataDecoded = decodeHtml(chartData);
+		var chartJsonArray = JSON.parse(chartDataDecoded)
+		var resultArray = [];
+	
+		for(var i in chartJsonArray){
+			resultArray.push([i, chartJsonArray[i]]);
+		}
+
+		google.charts.load('current', {'packages':['timeline']});
+	    google.charts.setOnLoadCallback(drawChart);
+	      
+      function drawChart(){
+        var container = document.getElementById('chart_div');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'Task' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+
+	      for (var i = 0; i < resultArray.length; i++){
+	    	  dataTable.addRows([
+	    		  			[resultArray[i][1]["taskName"], 
+	    		  			 new Date(resultArray[i][1]["startDate"]),
+	    		  			new Date(resultArray[i][1]["endDate"])]
+	    		  ]);
+	      }	
+	      var options = {
+		    		timeline: {rowLabelStyle: {fontName: "verdana", fontSize:22},
+		    		height: 1800}		  
+		      };
+	       		 chart.draw(dataTable, options);        
+             
+      }    		
+		function decodeHtml(html){
+		    var txt = document.createElement("textarea");
+		    txt.innerHTML = html;
+		    return txt.value;
+		}
+	</script> 
+	
+	<div id="chart_wrapper">
+  		<div id="chart_div"></div>
+  	</div>
+  	
+</div>	
+</body>
+
+</html>
